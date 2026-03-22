@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
   return (
@@ -13,12 +13,12 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingTop: 100,
   },
   text: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
