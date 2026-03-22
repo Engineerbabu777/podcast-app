@@ -9,26 +9,22 @@ if (!publishableKey) {
 }
 
 function RootStack() {
-
-  const {isLoaded, isSignedIn} = useAuth();
+  const { isLoaded, isSignedIn } = useAuth();
 
   if (!isLoaded) {
-      return null;
+    return null;
   }
-
-
-
 
   return (
     <>
       <Stack>
-
         <Stack.Protected guard={!isSignedIn}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack.Protected>
 
         <Stack.Protected guard={isSignedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="index" />
         </Stack.Protected>
       </Stack>
     </>
