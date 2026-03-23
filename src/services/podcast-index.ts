@@ -1,7 +1,6 @@
 
+import { Feed } from '@/types';
 import * as Crypto from 'expo-crypto';
-// import type { Episode, Feed } from '../types';
-// export type { Episode, Feed };
 
 const apiKey = process.env.EXPO_PUBLIC_PODCAST_INDEX_API_KEY!;
 const apiSecret = process.env.EXPO_PUBLIC_PODCAST_INDEX_API_SECRET;
