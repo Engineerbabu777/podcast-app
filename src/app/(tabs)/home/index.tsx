@@ -4,10 +4,8 @@ export default function Home() {
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic">
       <View style={styles.container}>
-        <Text style={styles.text}>Home</Text>
+        <Text className="text-red-500">Home</Text>
       </View>
-
-      
     </ScrollView>
   );
 }
