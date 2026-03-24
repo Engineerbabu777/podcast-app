@@ -40,7 +40,7 @@ export const fetchIndex = async (path: string, options: RequestInit = {}) => {
 };
 
 export async function fetchTrending(): Promise<{ feeds: Feed[] }> {
-  const res = await fetchIndex(`/podcasts/trending?lang=es`);
+  const res = await fetchIndex(`/podcasts/trending?lang=en`);
   return res.json();
 }
 

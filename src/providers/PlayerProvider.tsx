@@ -35,6 +35,9 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
     // const download = episode ? getDownload(episode.guid) : undefined;
     // player.replace({ uri: download?.localUri ?? episode?.enclosureUrl })
 
+    player.replace({ uri: episode?.enclosureUrl })
+
+
     // Adjust with actual data
     player.setActiveForLockScreen(true, {
       title: 'My Audio Title',

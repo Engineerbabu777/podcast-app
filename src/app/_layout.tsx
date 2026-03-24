@@ -42,7 +42,7 @@ function RootStack() {
           <Stack.Screen
             name="player"
             options={{
-              presentation: "fullScreenModal",
+              presentation: "modal",
               headerShown: true,
               headerTitle: "Player",
             }}
