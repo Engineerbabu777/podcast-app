@@ -1,4 +1,4 @@
-import { Feed } from "@/types";
+import { Episode, Feed } from "@/types";
 import * as Crypto from "expo-crypto";
 
 const apiKey = process.env.EXPO_PUBLIC_PODCAST_INDEX_API_KEY!;
@@ -46,5 +46,11 @@ export async function fetchTrending(): Promise<{ feeds: Feed[] }> {
 
 export async function fetchFeedById(id: string): Promise<{ feeds: Feed }> {
   const res = await fetchIndex(`/podcasts/byfeedid?id=${id}`);
+  return res.json();
+}
+
+
+export async function fetchEpisodesByFeedId(feedId: string): Promise<{ items: Episode[] }> {
+  const res = await fetchIndex(`/episodes/byfeedid?id=${feedId}`);
   return res.json();
 }
