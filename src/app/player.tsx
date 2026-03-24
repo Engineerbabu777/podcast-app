@@ -1,11 +1,18 @@
-import { useState } from 'react';
-import { usePlayer } from '@/providers/PlayerProvider';
-import { Redirect } from 'expo-router';
-import { ActivityIndicator, Alert, Image, Pressable, Text, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Slider from '@react-native-community/slider';
-// import { downloadEpisode, deleteEpisodeDownload } from '@/services/downloads';
-// import { useDownloadsStore } from '@/stores/useDownloadsStore';
+import { usePlayer } from "@/providers/PlayerProvider";
+import { deleteEpisodeDownload, downloadEpisode } from "@/services/downloads";
+import { useDownloadsStore } from "@/store/useDownloadStore";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Slider from "@react-native-community/slider";
+import { Redirect } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 const PLAYBACK_RATES = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
@@ -14,11 +21,15 @@ export default function PlayerScreen() {
   const [isSeeking, setIsSeeking] = useState(false);
   const [seekValue, setSeekValue] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
-//   const { addDownload, removeDownload, isDownloaded: checkDownloaded } = useDownloadsStore();
-//   const isDownloaded = episode ? checkDownloaded(episode.guid) : false;
+  const {
+    addDownload,
+    removeDownload,
+    isDownloaded: checkDownloaded,
+  } = useDownloadsStore();
+  const isDownloaded = episode ? checkDownloaded(episode.guid) : false;
 
   if (!episode) {
-    return <Redirect href={"/home"} />
+    return <Redirect href={"/home"} />;
   }
 
   const duration = playerStatus.duration || episode.duration || 0;
@@ -58,7 +69,10 @@ export default function PlayerScreen() {
           <Text className="text-xs text-gray-400">
             {episode.datePublishedPretty}
           </Text>
-          <Text className="text-base font-semibold text-black" numberOfLines={1}>
+          <Text
+            className="text-base font-semibold text-black"
+            numberOfLines={1}
+          >
             {episode.title}
           </Text>
           <Text className="text-sm text-gray-400" numberOfLines={1}>
@@ -68,36 +82,39 @@ export default function PlayerScreen() {
         <Pressable
           onPress={async () => {
             if (isDownloading) return;
-            // if (isDownloaded) {
-            //   Alert.alert('Remove Download', 'Delete the downloaded episode?', [
-            //     { text: 'Cancel', style: 'cancel' },
-            //     {
-            //       text: 'Delete',
-            //       style: 'destructive',
-            //       onPress: () => {
-            //         // deleteEpisodeDownload(episode.id);
-            //         removeDownload(episode.guid);
-            //       },
-            //     },
-            //   ]);
-            //   return;
-            // }
+            if (isDownloaded) {
+              Alert.alert("Remove Download", "Delete the downloaded episode?", [
+                { text: "Cancel", style: "cancel" },
+                {
+                  text: "Delete",
+                  style: "destructive",
+                  onPress: () => {
+                    deleteEpisodeDownload(episode.id);
+                    removeDownload(episode.guid);
+                  },
+                },
+              ]);
+              return;
+            }
             setIsDownloading(true);
             try {
-            //   const localUri = await downloadEpisode(episode.id, episode.enclosureUrl);
-            //   addDownload({
-            //     guid: episode.guid,
-            //     title: episode.title,
-            //     image: episode.image || episode.feedImage,
-            //     feedId: String(episode.feedId),
-            //     feedTitle: episode.feedTitle,
-            //     localUri,
-            //     downloadedAt: Date.now(),
-            //     episodeData: episode,
-            //   });
+              const localUri = await downloadEpisode(
+                episode.id,
+                episode.enclosureUrl,
+              );
+              addDownload({
+                guid: episode.guid,
+                title: episode.title,
+                image: episode.image || episode.feedImage,
+                feedId: String(episode.feedId),
+                feedTitle: episode.feedTitle,
+                localUri,
+                downloadedAt: Date.now(),
+                episodeData: episode,
+              });
             } catch (e) {
               console.log(e);
-              Alert.alert('Download Failed', 'Could not download the episode.');
+              Alert.alert("Download Failed", "Could not download the episode.");
             } finally {
               setIsDownloading(false);
             }
@@ -107,9 +124,9 @@ export default function PlayerScreen() {
             <ActivityIndicator size="small" />
           ) : (
             <Ionicons
-              name={false ? 'checkmark-circle' : 'arrow-down-circle-outline'}
+              name={false ? "checkmark-circle" : "arrow-down-circle-outline"}
               size={28}
-              color={false ? '#3b82f6' : '#9ca3af'}
+              color={false ? "#3b82f6" : "#9ca3af"}
             />
           )}
         </Pressable>
@@ -133,10 +150,16 @@ export default function PlayerScreen() {
         />
         <View className="flex-row justify-between px-1 mt-1">
           <Text className="text-xs text-gray-400">
-            {formatTime(isSeeking ? seekValue * duration : playerStatus.currentTime)}
+            {formatTime(
+              isSeeking ? seekValue * duration : playerStatus.currentTime,
+            )}
           </Text>
           <Text className="text-xs text-gray-400">
-            -{formatTime(duration - (isSeeking ? seekValue * duration : playerStatus.currentTime))}
+            -
+            {formatTime(
+              duration -
+                (isSeeking ? seekValue * duration : playerStatus.currentTime),
+            )}
           </Text>
         </View>
       </View>
@@ -159,9 +182,10 @@ export default function PlayerScreen() {
               player.play();
             }
           }}
-          className="w-16 h-16 rounded-full bg-black items-center justify-center">
+          className="w-16 h-16 rounded-full bg-black items-center justify-center"
+        >
           <Ionicons
-            name={playerStatus.playing ? 'pause' : 'play'}
+            name={playerStatus.playing ? "pause" : "play"}
             size={32}
             color="white"
             style={!playerStatus.playing ? { marginLeft: 3 } : undefined}
@@ -183,7 +207,9 @@ export default function PlayerScreen() {
             minimumValue={0}
             maximumValue={1}
             value={player.volume}
-            onValueChange={(value) => { player.volume = value; }}
+            onValueChange={(value) => {
+              player.volume = value;
+            }}
             minimumTrackTintColor="#9ca3af"
             maximumTrackTintColor="#e5e7eb"
             thumbTintColor="#9ca3af"
@@ -192,13 +218,13 @@ export default function PlayerScreen() {
         <Ionicons name="volume-high" size={20} color="#9ca3af" />
       </View>
     </View>
-  )
+  );
 }
 
 function formatTime(seconds: number | null | undefined): string {
-  if (!seconds || seconds < 0) return '0:00';
+  if (!seconds || seconds < 0) return "0:00";
   const totalSeconds = Math.floor(seconds);
   const m = Math.floor(totalSeconds / 60);
   const s = totalSeconds % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
