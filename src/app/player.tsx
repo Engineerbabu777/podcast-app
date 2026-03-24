@@ -124,9 +124,9 @@ export default function PlayerScreen() {
             <ActivityIndicator size="small" />
           ) : (
             <Ionicons
-              name={false ? "checkmark-circle" : "arrow-down-circle-outline"}
+              name={isDownloaded ? "checkmark-circle" : "arrow-down-circle-outline"}
               size={28}
-              color={false ? "#3b82f6" : "#9ca3af"}
+              color={isDownloaded ? "#3b82f6" : "#9ca3af"}
             />
           )}
         </Pressable>

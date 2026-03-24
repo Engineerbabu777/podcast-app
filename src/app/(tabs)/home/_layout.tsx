@@ -36,7 +36,6 @@ export default function HomeLayout() {
           title: "",
           headerTransparent: true,
           headerBackButtonDisplayMode: "minimal",
-          headerBlurEffect: "light",
         }}
       />
     </Stack>
