@@ -1,3 +1,4 @@
+import PlayerProvider from "@/providers/PlayerProvider";
 import "../../global.css";
 
 import { ClerkProvider, useAuth } from "@clerk/expo";
@@ -38,6 +39,14 @@ function RootStack() {
               headerTitle: "Profile",
             }}
           />
+          <Stack.Screen
+            name="player"
+            options={{
+              presentation: "fullScreenModal",
+              headerShown: true,
+              headerTitle: "Player",
+            }}
+          />
         </Stack.Protected>
       </Stack>
     </>
@@ -47,7 +56,9 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <QueryClientProvider client={queryClient}>
-        <RootStack />
+        <PlayerProvider>
+          <RootStack />
+        </PlayerProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );
