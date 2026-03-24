@@ -1,17 +1,28 @@
-import { Episode } from '@/types';
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { AudioPlayer, AudioStatus, createAudioPlayer, setAudioModeAsync, useAudioPlayerStatus } from 'expo-audio';
+import { Episode } from "@/types";
+import {
+  AudioPlayer,
+  AudioStatus,
+  createAudioPlayer,
+  setAudioModeAsync,
+  useAudioPlayerStatus,
+} from "expo-audio";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 // import { useDownloadsStore } from '@/stores/useDownloadsStore';
-
 
 type PlayerContext = {
   episode: Episode | null;
   setEpisode: (ep: Episode | null) => void;
   player: AudioPlayer;
-  playerStatus: AudioStatus
-}
+  playerStatus: AudioStatus;
+};
 
-const PlayerContext = createContext<PlayerContext | null>(null)
+const PlayerContext = createContext<PlayerContext | null>(null);
 
 const player = createAudioPlayer(null, { updateInterval: 500 });
 
@@ -23,11 +34,11 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
     setAudioModeAsync({
       playsInSilentMode: true,
       shouldPlayInBackground: true,
-      interruptionMode: 'doNotMix',
+      interruptionMode: "doNotMix",
     });
   }, []);
 
-//   const getDownload = useDownloadsStore((s) => s.getDownload);
+  //   const getDownload = useDownloadsStore((s) => s.getDownload);
 
   const setActiveEpisode = (episode: Episode | null) => {
     setEpisode(episode);
@@ -35,21 +46,19 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
     // const download = episode ? getDownload(episode.guid) : undefined;
     // player.replace({ uri: download?.localUri ?? episode?.enclosureUrl })
 
-    player.replace({ uri: episode?.enclosureUrl })
-
+    player.replace({ uri: episode?.enclosureUrl });
 
     // Adjust with actual data
     player.setActiveForLockScreen(true, {
-      title: 'My Audio Title',
-      artist: 'Artist Name',
-      albumTitle: 'Album Name',
-      artworkUrl: 'https://example.com/artwork.jpg', // optional
+      title: episode?.feedTitle,
+      artist: "Artist Name",
+      albumTitle: "Album Name",
+      artworkUrl: "https://example.com/artwork.jpg", // optional
     });
 
-
     player.play();
-  }
-  console.log("Currently playing: ", episode)
+  };
+  console.log("Currently playing: ", episode);
 
   return (
     <PlayerContext.Provider
@@ -57,13 +66,13 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
         episode,
         setEpisode: setActiveEpisode,
         player,
-        playerStatus: status
-      }}>
+        playerStatus: status,
+      }}
+    >
       {children}
     </PlayerContext.Provider>
-  )
+  );
 }
-
 
 export function usePlayer() {
   const context = useContext(PlayerContext);
