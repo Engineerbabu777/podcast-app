@@ -2,6 +2,7 @@ import PlayerProvider from "@/providers/PlayerProvider";
 import "../../global.css";
 
 import { ClerkProvider, useAuth } from "@clerk/expo";
+import { resourceCache } from "@clerk/expo/resource-cache";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
@@ -54,7 +55,11 @@ function RootStack() {
 }
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+    <ClerkProvider
+      publishableKey={publishableKey}
+      tokenCache={tokenCache}
+      __experimental_resourceCache={resourceCache}
+    >
       <QueryClientProvider client={queryClient}>
         <PlayerProvider>
           <RootStack />
