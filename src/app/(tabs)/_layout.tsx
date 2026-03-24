@@ -1,9 +1,12 @@
+import MiniPlayer from "@/components/MiniPlayer";
+import { usePlayer } from "@/providers/PlayerProvider";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function TabLayout() {
+  const { episode } = usePlayer();
+
   return (
     <NativeTabs>
-      
       <NativeTabs.Trigger name="home">
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
@@ -19,6 +22,11 @@ export default function TabLayout() {
         <NativeTabs.Trigger.Label>Library</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
+      {episode && (
+        <NativeTabs.BottomAccessory>
+          <MiniPlayer />
+        </NativeTabs.BottomAccessory>
+      )}
     </NativeTabs>
   );
 }
