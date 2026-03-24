@@ -10,6 +10,7 @@ export default function HomeLayout() {
     <Stack
       screenOptions={{
         headerLargeTitle: true,
+        headerBlurEffect: "light",
       }}
     >
       <Stack.Screen
@@ -33,8 +34,9 @@ export default function HomeLayout() {
         name="[id]"
         options={{
           title: "",
-          headerBackButtonDisplayMode: "minimal",
           headerTransparent: true,
+          headerBackButtonDisplayMode: "minimal",
+          headerBlurEffect: "light",
         }}
       />
     </Stack>
