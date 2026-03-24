@@ -1,22 +1,32 @@
+import { useState } from "react";
 import { Feed } from "@/types";
 import { Link } from "expo-router";
 import { Image, Text, View } from "react-native";
+import { Shimmer } from "./Shimmer";
 
 interface PodcastCardProps {
   feed: Feed;
 }
 
 export function PodcastCard({ feed }: PodcastCardProps) {
+  const [imageLoading, setImageLoading] = useState(true);
   return (
     <Link
       className="flex-1 m-2 active:opacity-75 active:scale-[0.98] transition-all"
       href={`/home/${feed.id}`}
     >
       <View className="relative shadow-xl shadow-black/10">
+        {imageLoading && (
+          <Shimmer
+            className="w-full aspect-square rounded-[24px] absolute z-10"
+            borderRadius={24}
+          />
+        )}
         <Image
           source={{ uri: feed.image || feed.artwork }}
           className="w-full aspect-square rounded-[24px] bg-gray-100"
           resizeMode="cover"
+          onLoad={() => setImageLoading(false)}
         />
         {feed.explicit && (
           <View className="absolute top-2 right-2 bg-black/40 px-1.5 py-0.5 rounded-md backdrop-blur-md">

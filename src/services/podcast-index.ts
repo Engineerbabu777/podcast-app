@@ -44,7 +44,7 @@ export async function fetchTrending(): Promise<{ feeds: Feed[] }> {
   return res.json();
 }
 
-export async function fetchFeedyId(id: string): Promise<{ feeds: Feed }> {
+export async function fetchFeedById(id: string): Promise<{ feeds: Feed }> {
   const res = await fetchIndex(`/podcasts/byfeedid?id=${id}`);
   return res.json();
 }
