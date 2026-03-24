@@ -1,23 +1,28 @@
-import { ActivityIndicator, Text, View } from 'react-native'
-import { useQuery } from '@tanstack/react-query'
-import { fetchEpisodesByFeedId } from '@/services/podcast-index'
+import { fetchEpisodesByFeedId } from "@/services/podcast-index";
+import { useQuery } from "@tanstack/react-query";
+import { ActivityIndicator, Text, View } from "react-native";
+import { EpisodeListItem } from "./EpisodeListItem";
 
 interface EpisodesListProps {
-  feedId: string
+  feedId: string;
 }
 
 export function EpisodesList({ feedId }: EpisodesListProps) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['episodes', feedId],
+    queryKey: ["episodes", feedId],
     queryFn: () => fetchEpisodesByFeedId(feedId),
-  })
+  });
 
   if (isLoading) {
-    return <ActivityIndicator className="py-4" />
+    return <ActivityIndicator className="py-4" />;
   }
 
   if (error) {
-    return <Text className="text-sm text-gray-400 py-4">Failed to load episodes</Text>
+    return (
+      <Text className="text-sm text-gray-400 py-4">
+        Failed to load episodes
+      </Text>
+    );
   }
 
   const episodes = data?.items ?? [];
@@ -29,5 +34,5 @@ export function EpisodesList({ feedId }: EpisodesListProps) {
         <EpisodeListItem key={episode.id} episode={episode} />
       ))}
     </View>
-  )
+  );
 }

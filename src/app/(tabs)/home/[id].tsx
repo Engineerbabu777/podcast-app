@@ -1,3 +1,4 @@
+import { EpisodesList } from "@/components/EpisodeList";
 import { Shimmer } from "@/components/Shimmer";
 import { fetchFeedById } from "@/services/podcast-index";
 import { useQuery } from "@tanstack/react-query";
@@ -110,6 +111,8 @@ export default function PodcastDetails() {
           </Pressable>
         </View>
       ) : null}
+
+      <EpisodesList feedId={id as string} />
     </ScrollView>
   );
 }
